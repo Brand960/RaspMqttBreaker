@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+	<head>
+		<title>yindao</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css" media="screen">
+		html, body { height:100%;}
+		body { margin:0; padding:0; overflow:hidden; }
+		#flashContent { width:100%; height:100%; }
+		</style>
+	</head>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
+	<script type="text/javascript" src="../js/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	<body>
+	<!--<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+	  <div style="position: absolute; top: 0; right: 0;">
+	    <div class="toast" id="toast1" role="alert" aria-live="assertive" aria-atomic="true">
+	      <div class="toast-header">
+	        <strong class="mr-auto">灯光控制</strong>
+	        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="toast-body">
+	        已连接
+	      </div>
+	    </div>
+
+	    <div class="toast" id="toast2" role="alert" aria-live="assertive" aria-atomic="true">
+	      <div class="toast-header">
+	        <strong class="mr-auto">灯光控制</strong>
+	        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="toast-body">
+	        已断开
+	      </div>
+	    </div>
+	  </div>
+	</div>-->
+	<script>
+		 var options = {
+			 userName: 'test',
+			 password: 'test',
+			 onSuccess:onConnect
+		 }
+    	//$('.toast').toast(option);
+		// Create a client instance
+		var client = new Paho.MQTT.Client('192.168.10.100',8083,'test');
+
+		// set callback handlers
+		client.onConnectionLost = onConnectionLost;
+		client.onMessageArrived = onMessageArrived;
+		// connect the client
+		client.connect(options);
+
+		// called when the client connects
+		function onConnect() {
+		  // Once a connection has been made, make a subscription and send a message.
+		  console.log("onConnect");
+		  // alert("灯光连接");
+    	  //$('#toast1').toast('show');
+		  // client.subscribe("Byte");
+		  message = new Paho.MQTT.Message("0");
+		  message.destinationName = "BytePayload/test9";
+		  message.retained=true;
+		  client.send(message);
+		}
+
+		// called when the client loses its connection
+		function onConnectionLost(responseObject) {
+		  if (responseObject.errorCode !== 0) {
+		  	// alert("灯光断开");
+    	    //$('#toast2').toast('show');
+		    console.log("onConnectionLost:"+responseObject.errorMessage);
+		  }
+		}
+
+		// called when a message arrives
+		function onMessageArrived(message) {
+		  console.log("onMessageArrived:"+message.payloadString);
+		}
+
+		function send(i){
+			console.log(i);
+	        message = new Paho.MQTT.Message(i.toString());
+	        message.destinationName = "BytePayload/test9";
+		    message.retained=true;
+		    client.send(message);
+		}
+	</script>
+	<table width="2160" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="1620"><img src="../Img/yindao.png" alt="" width="2160" height="1620" usemap="#Map1" /></td>
+      </tr>
+    </table>
+	
+	<map name="Map1" id="Map1">
+<area shape="poly" onclick="send(4)" style="outline:none" coords="1804,752,1896,724,1915,716,1953,713,2002,696,2010,651,2046,668,2053,719,2104,746,2070,811,2018,861,1988,864,1998,891,2012,918,1993,969,1949,1002,1919,991,1902,964,1868,974,1815,979,1726,891,1684,712,1714,695" href="neiong_05.html" target="modframe" alt="" />
+		<area shape="poly" onclick="send(11)" style="outline:none" coords="1186,716,1209,706,1228,698,1240,720,1244,733,1264,739,1273,734,1286,753,1327,743,1341,821,1323,882,1269,966,1233,981,1173,981,1164,949,1135,926,1138,879,1165,857,1165,841,1159,800,1160,776,1153,748,1168,725" href="neiong_03.html" target="modframe" alt="" />
+		<area shape="rect" onclick="send(0)" coords="1980,1512,2040,1560" href="diqiu.html" target="modframe" alt="" />
+		<area shape="poly" onclick="send(3)" id="choice" style="outline:none" coords="674,1204,749,1268,782,1264,758,1352,670,1408,574,1372,522,1348,470,1276,463,1253,321,1184,430,1096,514,1112,696,1166" href="neiong_10.html" target="modframe" alt="" />
+		<area shape="poly" onclick="send(19)" coords="1744,1039,1769,1037,1789,1036,1806,1025,1821,1029,1826,1060,1820,1096,1781,1110,1764,1129,1738,1136,1707,1132,1683,1146,1657,1156,1658,1175,1662,1186,1617,1209,1602,1221,1580,1204,1552,1204,1532,1195,1535,1147,1526,1131,1514,1104,1512,1072,1516,1035,1542,1007,1577,993,1600,1002,1655,999,1679,1010,1697,1033,1713,1043,1746,1040" href="neiong_06.html" target="modframe" alt=""  style="outline:none" />
+		<area shape="poly" onclick="send(8)" style="outline:none" coords="821,814,837,794,856,786,868,808,872,821,892,827,901,822,914,841,948,870,984,897,1004,907,992,934,973,958,956,975,903,980,884,1005,864,983,856,948,848,904,821,900,807,859,794,839,822,816" href="neiong_02.html" target="modframe" alt="" />
+		<area shape="poly" onclick="send(6)" coords="994,674,1059,678,1080,689,1084,717,1092,752,1118,773,1130,764,1143,801,1143,845,1115,886,1095,920,1053,916,1041,882,1020,872,992,878,953,861,958,833,938,810,913,810,919,773,930,747,982,690,996,678" href="neiong_04.html" target="modframe" alt=""  style="outline:none" />
+		<area shape="poly" onclick="send(18)" coords="1487,843,1487,817,1490,797,1487,767,1467,755,1461,736,1448,712,1439,694,1435,669,1450,655,1468,634,1479,622,1491,636,1501,678,1541,687,1581,675,1607,683,1610,702,1594,741,1580,785,1582,823,1607,847,1616,877,1607,931,1590,963,1548,936,1517,916,1490,891,1476,850" href="neiong_12.html" target="modframe" alt=""  style="outline:none"  />
+		<area shape="poly" coords="1484,956,1488,943,1473,916,1460,893,1447,866,1456,829,1466,808,1445,769,1425,723,1362,749,1349,776,1351,842,1347,897,1344,932,1346,960,1386,946,1410,914,1431,934,1436,959" href="neiong_09.html" target="modframe" alt=""  style="outline:none" onclick="send(14)" />
+		<area shape="poly" coords="1398,968,1417,962,1422,979,1420,1004,1414,1024,1383,1037,1352,1032,1327,1032,1311,1043,1294,1060,1292,1081,1308,1107,1295,1123,1278,1132,1255,1116,1237,1094,1226,1074,1225,1049,1223,1026,1245,1017,1282,1024,1296,1011,1292,977,1287,950,1320,937,1315,957,1312,980,1315,996,1331,999,1345,989,1360,986,1382,990,1391,985" href="neiong_13.html" target="modframe" alt=""  style="outline:none" onclick="send(15)" />
+		<area shape="poly" coords="1331,1103,1326,1073,1351,1066,1398,1069,1438,1047,1455,1006,1478,975,1513,970,1527,980,1507,1008,1493,1028,1488,1064,1489,1084,1492,1123,1520,1161,1517,1186,1519,1206,1480,1211,1424,1211,1417,1232,1405,1238,1355,1208,1336,1216,1307,1222,1288,1212,1295,1173,1309,1149,1334,1140" href="neiong_11.html" target="modframe" alt=""  style="outline:none" onclick="send(16)" />
+		<area shape="poly" coords="1084,1070,1104,1052,1108,1000,1109,971,1125,966,1148,982,1175,1008,1188,1046,1202,1087,1226,1127,1237,1162,1241,1204,1249,1234,1221,1238,1178,1235,1119,1241,1098,1235,1070,1248,1022,1277,970,1289,962,1277,975,1217,983,1180,1032,1166,1056,1145" href="neiong_15.html" target="modframe" alt="" style="outline:none" onclick="send(13)" />
+		<area shape="poly" coords="978,1144,938,1157,897,1129,881,1074,899,1034,926,1017,971,1014,995,983,1016,944,1048,957,1072,967,1071,1005,1061,1038,1052,1077,1018,1110,994,1140" href="neiong_18.html" target="modframe" alt="" style="outline:none" onclick="send(12)" />
+		<area shape="poly" coords="1066,1361,1032,1343,1035,1315,1044,1296,1086,1270,1134,1260,1183,1249,1195,1254,1206,1277,1219,1307,1240,1367,1239,1398,1227,1418,1201,1414,1198,1383,1185,1358,1163,1343,1137,1342,1106,1358,1102,1377" href="neiong_07.html" target="modframe" alt=""  style="outline:none" onclick="send(17)" />
+		<area shape="poly" coords="1198,682,1160,705,1104,724,1101,689,1089,663,1049,658,1011,659,981,617,1051,634,1062,592,1075,570,1089,526,1112,518,1163,588,1202,664,1198,681" href="neiong_01.html" target="modframe" alt="" style="outline:none" onclick="send(10)" />
+		<area shape="poly" coords="690,819,704,777,719,741,662,736,660,695,632,677,518,706,397,711,323,719,275,782,191,670,105,750,90,788,168,835,393,894,599,883" href="neiong_19.html" target="modframe" alt=""  style="outline:none" onclick="send(2)" />
+		<area shape="poly" coords="586,593,545,537,484,481,485,453,559,449,574,394,544,341,624,297,718,269,766,268,759,340,680,397,634,440,625,540,642,585,610,618,584,597" href="neiong_16.html" target="modframe" alt="" style="outline:none" onclick="send(1)" />
+		<area shape="poly" coords="752,1032,735,1027,731,987,715,950,753,891,767,877,786,886,811,908,821,938,828,977,841,1013,828,1017" href="neiong_08.html" target="modframe" alt=""  style="outline:none" onclick="send(9)" />
+		<area  style="outline:none" onclick="send(7)" shape="poly" coords="919,623,968,645,971,674,944,694,916,717,904,771,875,780,866,750,876,704,877,637,874,583,873,548,851,537,829,530,813,487,818,450,876,455,884,493,894,543,901,586,895,610,907,625" href="#" alt="" />
+		<area shape="poly" onclick="send(5)" coords="977,442,953,464,934,436,911,383,892,386,892,428,902,463,914,495,911,518,920,571,925,599,954,598,961,557,979,540,994,552,1010,583,1030,598,1050,574,1056,538,1062,522,1034,485,1035,447,1028,405,1003,380,987,409" href="neiong_14.html" target="modframe" alt=""  style="outline:none"  />
+		<area  style="outline:none" onclick="send(20)" shape="poly" coords="1556,399,1509,446,1488,471,1474,513,1459,537,1416,570,1405,597,1413,663,1452,633,1491,604,1514,567,1554,539,1565,551,1608,545,1624,559,1653,569,1695,544,1697,498,1674,471,1644,495,1619,506,1582,498,1573,474,1584,458,1584,446,1562,401" href="#" alt="" />
+</map>
+</body>
+</html>
